@@ -19,16 +19,19 @@ Suite de pruebas automatizadas end-to-end para **Urban Routes**, una aplicación
 - **Python 3**
 - **Selenium WebDriver** para la automatización del navegador
 - **pytest** como framework de pruebas
-- **Page Object Model (POM)**: los localizadores y las acciones sobre la página viven en la clase `UrbanRoutesPage`, y los casos de prueba en `TestUrbanRoutes`, ambas en [main.py](main.py)
-- **Chrome DevTools Protocol (performance log)** para interceptar la petición de red que contiene el código de confirmación del teléfono (función `retrieve_phone_code`)
+- **Page Object Model (POM)**: los localizadores y las acciones sobre la página viven en la clase `UrbanRoutesPage` ([pages.py](pages.py)), separada de los casos de prueba (`TestUrbanRoutes`, en [main.py](main.py))
+- **Chrome DevTools Protocol (performance log)** para interceptar la petición de red que contiene el código de confirmación del teléfono (función `retrieve_phone_code` en [helpers.py](helpers.py))
 - Esperas explícitas (`WebDriverWait` / `expected_conditions`) en lugar de `sleep()`, para sincronizar las pruebas con el estado real de la interfaz
+- **Fixture de pytest** (`driver` en [main.py](main.py)) que crea una sesión de navegador nueva por cada prueba, para que cada `test_...` sea independiente y pueda ejecutarse solo, en cualquier orden (por ejemplo `pytest -k test_fill_card`)
 
 ## Estructura del proyecto
 
 ```
 qa-project-Urban-Routes-es/
-├── data.py     # URL del servidor y datos de prueba (dirección, teléfono, tarjeta, mensaje)
-├── main.py     # UrbanRoutesPage (localizadores y métodos) y TestUrbanRoutes (casos de prueba)
+├── data.py       # URL del servidor y datos de prueba (dirección, teléfono, tarjeta, mensaje)
+├── helpers.py    # Funciones auxiliares independientes de la página (retrieve_phone_code)
+├── pages.py      # UrbanRoutesPage: localizadores, esperas y métodos de interacción/consulta
+├── main.py       # Fixture del driver, precondiciones de cada escenario y TestUrbanRoutes (asserts)
 └── README.md
 ```
 
